@@ -7,18 +7,17 @@ app = FastAPI()
 
 @app.get('/')
 async def get_quiz():
-    apiKey = 'dPPZ9lwtQQZcqH8sqKAob5kSRfB70UCJtUXvuLoo'
 
-    url = 'https://quizapi.io/api/v1/questions'
-
-    params = {
-        'apiKey':apiKey,
-        'limits': 10
-    }
-
-    response = requests.get(url,apiKey=apiKey, limits=10)
+    url ='https://opentdb.com/api.php?amount=10&category=18&difficulty=medium&type=multiple'
+    
+    response = requests.get(url)
     
     data = response.json()
+    
+    jurema = json.dumps(data, indent=4)
+    
+    print(jurema)
+    
     return data
 
 
@@ -26,4 +25,3 @@ if __name__ == '__main__':
 
     import uvicorn
     uvicorn.run("teste:app", host='127.0.0.1', port=8000, reload=True)
-
