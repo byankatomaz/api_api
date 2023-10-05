@@ -1,6 +1,7 @@
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy import Text, ForeignKey
-from typing import List
+from typing import List, Optional
+from pydantic import BaseModel
 
 class Base(DeclarativeBase):
     pass
@@ -38,3 +39,13 @@ class Incorrect(Base):
     
     def __repr__(self) -> str:
         return f'<Comment teste={self.incorrect_text} by {self.question.question}>'
+    
+
+class InsertQuestion(BaseModel):
+    id:Optional[int] = None
+    question:Optional[str]
+    category:Optional[str] 
+    difficult:Optional[str] 
+    type_question:Optional[str]
+    correct_answer:List["Correct"]
+    incorrect_answer:List["Incorrect"] 

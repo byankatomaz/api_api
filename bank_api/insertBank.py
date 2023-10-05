@@ -25,3 +25,5 @@ def popular_dados(data):
 
     session.commit()
 
+
+

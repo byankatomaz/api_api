@@ -1,12 +1,14 @@
 from fastapi import FastAPI, HTTPException, status
 from api import url, url2, url3
+from models import InsertQuestion
 from insertBank import popular_dados
-from queryOne import find_Question
+from queryOne import findOneQuestion
+from queryAll import findAllQuestion
 import requests
 
 app = FastAPI()
 
-@app.get('/questions')
+@app.get('/populando')
 async def get_quiz():
 
     response = requests.get(url3)
@@ -19,17 +21,35 @@ async def get_quiz():
     return data
 
 
+@app.get('/')
+async def get_main():
+    return {"message": "Hello, welcome on my API."}
+    
+
+@app.get('/questions')
+async def get_question():
+    return findAllQuestion()
+
+
 @app.get('/questions/{question_id}')
 async def get_question(question_id: int):
-    return find_Question(question_id)
+    
+    question = findOneQuestion(question_id) 
+    
+    if question:
+        return question
+    else:
+        return     {"message": "Sorry, question not found."}
 
 
-# @app.post('/newQuestion')
-# async def post_question():
+@app.post('/newQuestion')
+async def post_question(questionNew: InsertQuestion):
+    return questionNew
+    
     
 
 
 if __name__ == '__main__':
 
     import uvicorn
-    uvicorn.run("fastapiConnect:app", host='127.0.0.1', port=8000, reload=True)
+    uvicorn.run("fastapiConnect:app", host='0.0.0.0', port=8000, reload=True)
