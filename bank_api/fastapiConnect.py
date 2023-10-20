@@ -7,8 +7,19 @@ from queryAll import findAllQuestion
 from editQuestion import edit_question
 from deleting import deleteOneQuestion
 import requests
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+#Configurar o CORS (permitir acesso de qualquer origem)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://10.109.71.13:5173"],  # Substitua pela origem do seu aplicativo Vite
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get('/populating')
 async def get_quiz():
@@ -94,4 +105,4 @@ async def put_question(question_id: int):
 if __name__ == '__main__':
 
     import uvicorn
-    uvicorn.run("fastapiConnect:app", host='127.0.0.1', port=8000, reload=True)
+    uvicorn.run("fastapiConnect:app", host='10.109.71.13', port=8000, reload=True)
